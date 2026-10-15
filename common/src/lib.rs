@@ -63,3 +63,8 @@ pub struct Globals {
 pub fn probe_push_a(x: u32) -> bool {
     x > 3
 }
+
+/// Probe: an untested fn pushed straight to main (Phase 2 push-alert test).
+pub fn probe_untested_on_main(x: u32) -> u32 {
+    x * 3
+}

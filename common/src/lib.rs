@@ -63,3 +63,8 @@ pub struct Globals {
 pub fn probe_push_a(x: u32) -> bool {
     x > 3
 }
+
+/// Probe: a fork PR change, for the fork + private-deps test.
+pub fn probe_fork_fn(x: u32) -> u32 {
+    x + 7
+}

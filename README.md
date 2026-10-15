@@ -339,3 +339,4 @@ name in their filenames: `docs/design/2026-06-21-session-knowledge-catalog.md` a
 ```
 otto ci      # lint + bloat + check (clippy -D warnings, fmt) + test, across the whole workspace
 ```
+probe: no mutable .rs lines in this PR

@@ -5,7 +5,7 @@
 
 //! The clyde-common surface: the common CLI globals the `clyde` umbrella owns at the top level
 //! and passes down to each absorbed tool's `run(args, globals)` entry point, plus shared helpers
-//! (config loading, `--since` parsing, atomic writes, and external-tool `--help` advertising).
+//! (config loading, `--since` parsing, atomic writes, and external-tool `--help` advertising). Probe: doc-only edit.
 
 pub mod atomic;
 /// The shared checkout matrix, behind the `testkit` feature so it never ships in a release binary.

@@ -4,12 +4,12 @@ name: mutants-caller
 # Production callers pin tatari-tv/github-actions-public/.github/workflows/mutants.yml@vX.Y.Z.
 # Probe-only knobs (throwaway repo):
 #   vars.MUTANTS_SHARD_TIMEOUT  short shard timeout, for the forced mid-run failure test
+#   vars.MUTANTS_TARGET_WALL    small target-wall, to force N > 1 shards on a small diff
 #   fork PRs claim private-deps, for the fork + private-deps -> incomplete test
-#   push also fires on nobase-probe, for the zero-before -> incomplete test
 on:
   pull_request: {}
   push:
-    branches: [main, nobase-probe]
+    branches: [main]
 
 permissions:
   contents: read
@@ -19,5 +19,6 @@ jobs:
   mutants:
     uses: ./.github/workflows/mutants.yml
     with:
+      target-wall: ${{ fromJSON(vars.MUTANTS_TARGET_WALL || '600') }}
       shard-timeout-minutes: ${{ fromJSON(vars.MUTANTS_SHARD_TIMEOUT || '0') }}
       private-deps: ${{ github.event.pull_request.head.repo.fork == true }}

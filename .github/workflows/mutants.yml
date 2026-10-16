@@ -187,10 +187,14 @@ jobs:
             incomplete "private-deps is set but the private-deps-token secret is empty"
           fi
 
+          # Explicit a/ b/ prefixes: cargo-mutants maps diff paths by stripping
+          # them, and a diff written with diff.mnemonicPrefix (i/ w/ c/) lists
+          # ZERO mutants with exit 0. Measured on desk, where dotfiles set it.
           diff="$RUNNER_TEMP/pr.diff"
+          gdiff() { git diff --no-ext-diff --src-prefix=a/ --dst-prefix=b/ "$@"; }
           case "$EVENT" in
             pull_request)
-              git diff HEAD^1 HEAD > "$diff"
+              gdiff HEAD^1 HEAD > "$diff"
               ;;
             push)
               # Test the whole pushed range, before..sha. Never fall back to
@@ -209,7 +213,7 @@ jobs:
                   fetch --no-tags --depth=1 origin "$BEFORE"; then
                 incomplete "no base for push (fetch of before $BEFORE failed; force push?)"
               fi
-              git diff "$BEFORE" "$SHA" > "$diff"
+              gdiff "$BEFORE" "$SHA" > "$diff"
               ;;
             *)
               incomplete "unsupported event '$EVENT' (want pull_request or push)"

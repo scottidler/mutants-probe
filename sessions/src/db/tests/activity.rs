@@ -480,3 +480,17 @@ fn the_backfill_re_derives_the_title_and_keeps_fts_in_step() {
         .unwrap();
     assert_eq!(indexed, want, "the FTS title must be re-indexed with the column");
 }
+
+/// `indexed_rows` is the reindex's one-query view of the catalog: every cataloged session comes
+/// back keyed by its id, with its stored cwd. An empty map would make the reindex re-parse every
+/// transcript.
+#[test]
+fn indexed_rows_returns_every_cataloged_session() {
+    let db = Db::open_memory().unwrap();
+    let now = Utc::now();
+    db.upsert_session(&parsed(UUID_A, Some(now), now), "host-01").unwrap();
+
+    let rows = db.indexed_rows().unwrap();
+    let row = rows.get(UUID_A).expect("the cataloged session must be indexed");
+    assert_eq!(row.cwd.as_deref(), Some("/home/saidler/repos/tatari-tv/clyde"));
+}
